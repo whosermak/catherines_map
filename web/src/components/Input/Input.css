@@ -1,0 +1,27 @@
+.div-input {
+    outline: 0;
+    width: 100%;
+    display: block;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.div-input-scroll {
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.div-input-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+
+.div-placeholder:empty::before,
+.div-placeholder-onFocus:focus:empty::before,
+.div-placeholder-notFocus:empty:not(:focus)::before {
+    content: attr(data-placeholder);
+    pointer-events: none;
+}
