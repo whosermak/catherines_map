@@ -1,27 +1,26 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react"
-import { forwardRef } from "react"
-import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { SiderLinkBtn } from "../Sider"
+import { useSt } from "@/app/store"
 
-const variants = cva(
-    "base classes",
-)
 
 type Props = {
-    
-} & ButtonHTMLAttributes<HTMLButtonElement>
-  & VariantProps<typeof variants>
+    className?: string
+}
 
+export const UserBar = ({ className, ...props }: Props) => {
+    const user = useSt(s => s.user)
+    if (!user) return null
 
-export const Button = forwardRef<
-    HTMLButtonElement,
-    Props
->(({ className, children, ...props }, ref) => {
     return (
-        <button ref={ref} className={cn(variants(), className)} {...props}>
-            {children}
-        </button>
+        <SiderLinkBtn
+            to={`/user/${user.id}`}
+            className={cn("flex-row", className)} 
+            {...props}
+        >
+            <img className="w-10 h-10 rounded-md" src={user.avatar} />
+            <span className="truncate">{user.name}</span>
+        </SiderLinkBtn>
     )
-})
+}
 
-Button.displayName = "Button"
+

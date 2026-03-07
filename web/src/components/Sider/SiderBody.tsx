@@ -1,3 +1,3 @@
-export default function SiderBody() {
+export function SiderBody() {
     
 }

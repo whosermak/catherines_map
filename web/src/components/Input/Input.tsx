@@ -3,7 +3,7 @@ import "./Input.css"
 
 type Props = {
     placeholder?: string
-} & HTMLAttributes<HTMLDivElement>
+} & React.ComponentProps<'div'>
 
 export const Input = forwardRef<HTMLDivElement, Props>(({ placeholder="", ...p }, ref) => {
     const onInp = (e: React.SyntheticEvent<HTMLDivElement>) => {

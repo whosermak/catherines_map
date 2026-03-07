@@ -1,3 +1,3 @@
-export default function SiderFooter() {
+export function SiderFooter() {
     
 }

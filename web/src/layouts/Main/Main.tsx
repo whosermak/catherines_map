@@ -1,40 +1,40 @@
 import "./Main.css"
-import Sidebar from "@/components/Sider/Sider"
-import { GoBell, GoBookmark, GoHomeFill, GoKebabHorizontal, GoMail, GoSearch, GoSignIn, GoX } from "react-icons/go";
-import SiderBtn from "@/components/Sider/SiderBtn";
-import SiderHr from "@/components/Sider/SiderHr";
-import { Link, Outlet } from "react-router-dom";
+import { Sidebar, SiderBtn, SiderLinkBtn, SiderHr } from "@/components/Sider"
+import { GoBell, GoBookmark, GoHomeFill, GoKebabHorizontal, GoMail, GoSearch, GoSignIn, GoSignOut } from "react-icons/go";
+import { Outlet } from "react-router-dom";
 import { useSt } from "@/app/store";
+import { UserBar } from "@/components/UserBar/UserBar";
+import * as UserApi from "@/services/user"
+
 
 export default function Main() {
     const user = useSt(s => s.user)
+
+    const logout = async () => {
+        await UserApi.logout()
+        window.location.reload()
+    }
     
     return (
         <div className="flex justify-center items-center h-full w-full">
             <div style={{width:"1500px"}} className="h-full w-full flex justify-center">
                 <Sidebar width="300px">
-                    <SiderBtn>
-                        <GoX strokeWidth={2} className="w-7 h-7" />
-                        <span className="text-2xl">Екатерина твитер</span>
-                    </SiderBtn>
+                    { user && <UserBar /> }
+                    { !user && 
+                        <SiderLinkBtn className="w-full" to="/login">
+                            <GoSignIn className="w-6 h-6" />
+                            Войти
+                        </SiderLinkBtn>
+                    }
                     <SiderHr />
-                    <SiderBtn>
+                    <SiderLinkBtn to="/feed">
                         <GoHomeFill className="w-6 h-6"/>
                         Главная
-                    </SiderBtn>
+                    </SiderLinkBtn>
                     <SiderBtn>
                         <GoSearch className="w-6 h-6" />
                         Поиск
                     </SiderBtn>
-                    
-                    { !user &&
-                    <Link className="w-full" to="/login">
-                        <SiderBtn>
-                            <GoSignIn className="w-6 h-6" />
-                            Войти
-                        </SiderBtn>
-                    </Link>
-                    }
                     
                     <SiderBtn>
                         <GoBell className="w-6 h-6" />
@@ -52,8 +52,14 @@ export default function Main() {
                         <GoKebabHorizontal className="w-6 h-6" />
                         Еще
                     </SiderBtn>
+                    { user && 
+                        <SiderBtn onClick={() => logout()}>
+                            <GoSignOut className="w-6 h-6" />
+                            Выход
+                        </SiderBtn>
+                    }
                 </Sidebar>
-                <div style={{width:"700px"}} className="flex pt-2 flex-col border-border border-l border-r scrollbar-hide scroll-smooth overflow-x-auto whitespace-nowrap">
+                <div style={{width:"700px"}} className="flex flex-col border-border border-l border-r scrollbar-hide scroll-smooth overflow-x-auto whitespace-nowrap">
                     <Outlet />
                 </div>
                 <Sidebar width="350px" />
