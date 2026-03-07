@@ -22,7 +22,17 @@ model User {
 model Post {
   id        Int     @id @unique @default(autoincrement())
   text      String  
-  time      String
+  time      DateTime
+
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
+
+  parent    Post?   @relation("Replies", fields: [parentId], references: [id])
+  replies   Post[]  @relation("Replies")
+  parentId  Int?
+
+  rootId    Int?
+
+  @@index([parentId])
+  @@index([rootId])
 }

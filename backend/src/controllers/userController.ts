@@ -36,3 +36,46 @@ export const logout = (req: Request, res: Response) => {
 
     res.status(200).json({})
 }
+
+export const me = (req: Request, res: Response) => {
+    const user = { ...req.user }
+    delete user.pwd;
+    res.status(200).json({ user })
+}
+
+export const find_user = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        if (!id) return res.status(400).json({})
+        const user = await User.find_user(Number(id))
+        if (!user) return res.status(404).json({})
+        res.status(200).json({ user })
+    } catch(e) {
+        console.log(e)
+        res.status(500).json({})
+    }
+}
+
+export const get_posts = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const { cursor } = req.query as Record<string, string>
+        
+        const { posts, nextCursor } = await User.get_posts_byAuthor(Number(id), 20, cursor)
+        return res.status(200).json({ posts, nextCursor })
+    } catch(e) {
+        console.log(e)
+        res.status(500).json({})
+    }
+}
+
+export const count_posts = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const result = await User.count_posts(Number(id))
+        res.status(200).json({posts: result})
+    } catch(e) {
+        console.log(e)
+        res.status(500).json({})
+    }
+}
